@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#293241">
+<title>BIO 4650 · Midterm 2 Rapid Recall</title>
+<style>
+:root {
+  color-scheme: light;
+  --ink: #293241;
+  --blue: #3D5A80;
+  --sky: #98C1D9;
+  --coral: #EE6C4D;
+  --paper: #f4f7f9;
+  --muted: #536477;
+  --line: #d5dfe7;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font: 17px/1.6 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+button, input { font: inherit; }
+button { touch-action: manipulation; }
+button, label { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, input:focus-visible + span {
+  outline: 3px solid var(--blue);
+  outline-offset: 5px;
+}
+h1, h2, p { margin: 0; }
+h1, h2 { line-height: 1.15; letter-spacing: -.035em; }
+h1 { font-size: clamp(2.5rem, 7vw, 4.4rem); max-width: 700px; }
+h2 { font-size: clamp(1.7rem, 4.5vw, 2.5rem); }
+header {
+  background: var(--ink);
+  color: white;
+  border-top: 6px solid var(--coral);
+}
+.header-inner, main, footer { max-width: 1000px; margin: auto; }
+.header-inner { padding: 38px 28px 42px; }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  color: #dbe9f1;
+  font-size: .82rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.brand::before {
+  content: "";
+  width: 26px;
+  height: 5px;
+  border-radius: 5px;
+  background: var(--coral);
+}
+.subtitle { margin-top: 18px; color: #dbe9f1; }
+main { padding: 32px 28px 16px; }
+.card {
+  padding: clamp(24px, 5vw, 44px);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: white;
+  box-shadow: 0 12px 36px #29324108;
+}
+.eyebrow {
+  color: var(--blue);
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.lead { margin: 16px 0 24px; max-width: 700px; }
+.muted { color: var(--muted); }
+.note {
+  padding: 15px 18px;
+  background: #edf4f8;
+  border-left: 4px solid var(--sky);
+  border-radius: 0 10px 10px 0;
+  font-size: .94rem;
+}
+fieldset { border: 0; padding: 0; margin: 28px 0; min-width: 0; }
+legend { font-weight: 750; margin-bottom: 12px; padding: 0; }
+.choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.timers { grid-template-columns: repeat(4, 1fr); }
+.choice { position: relative; cursor: pointer; }
+.choice input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.choice span {
+  display: block;
+  padding: 16px;
+  height: 100%;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  transition: background .15s, border-color .15s;
+}
+.choice strong { display: block; }
+.choice small { color: var(--muted); }
+.choice input:checked + span { border-color: var(--blue); background: #edf4f8; }
+.choice input:checked + span::after {
+  content: "Selected";
+  display: block;
+  color: var(--blue);
+  font-size: .72rem;
+  font-weight: 750;
+  margin-top: 4px;
+}
+.timers .choice span { text-align: center; }
+.actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+button {
+  border: 2px solid var(--blue);
+  border-radius: 11px;
+  padding: 13px 22px;
+  min-height: 50px;
+  cursor: pointer;
+  font-weight: 750;
+  color: white;
+  background: var(--blue);
+}
+button:hover { filter: brightness(.94); }
+button.secondary { color: var(--blue); background: white; }
+button.start { background: var(--coral); border-color: var(--coral); color: var(--ink); }
+button:disabled { opacity: .55; cursor: default; }
+.topline { display: flex; justify-content: space-between; gap: 16px; align-items: center; }
+.pill {
+  background: #edf4f8;
+  color: var(--blue);
+  border-radius: 100px;
+  padding: 5px 12px;
+  font-size: .8rem;
+  font-weight: 750;
+}
+progress {
+  display: block;
+  appearance: none;
+  width: 100%;
+  height: 7px;
+  border: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #e7edf2;
+  accent-color: var(--blue);
+  margin: 16px 0 30px;
+}
+progress::-webkit-progress-bar { background: #e7edf2; }
+progress::-webkit-progress-value { background: var(--blue); }
+progress::-moz-progress-bar { background: var(--blue); }
+.timer-row { display: flex; justify-content: space-between; gap: 16px; font-size: .88rem; }
+#timer { font-weight: 800; font-variant-numeric: tabular-nums; }
+.timer-track { height: 5px; background: #e7edf2; border-radius: 8px; overflow: hidden; margin: 9px 0 30px; }
+#timer-fill { height: 100%; background: var(--blue); width: 100%; }
+.timer-track.expired #timer-fill { background: var(--coral); }
+#question { margin: 12px 0 18px; }
+#question:focus, #summary-title:focus, #setup-title:focus, #answer-title:focus { outline: none; }
+#time-message { min-height: 1.6em; font-size: .95rem; color: var(--muted); }
+.answer {
+  margin-top: 26px;
+  padding: 24px;
+  background: #edf4f8;
+  border-radius: 14px;
+  border-left: 4px solid var(--sky);
+}
+#answer-title { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: var(--blue); }
+#answer-text { margin-top: 10px; font-size: clamp(1.3rem, 3vw, 1.8rem); font-weight: 650; line-height: 1.4; }
+.rating-hint { margin-top: 22px; font-size: .95rem; color: var(--muted); }
+.summary-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0; }
+.stat { background: #edf4f8; padding: 22px; border-radius: 14px; }
+.stat.review { background: #fcf0ec; }
+.stat b { display: block; font-size: 2.5rem; line-height: 1.2; }
+.stat span { font-size: .9rem; }
+footer { padding: 16px 28px 36px; font-size: .8rem; color: var(--muted); }
+footer span { display: block; }
+@media (max-width: 600px) {
+  .header-inner { padding: 28px 20px 32px; }
+  main { padding: 22px 16px 12px; }
+  .choices { grid-template-columns: 1fr; }
+  .timers { grid-template-columns: 1fr 1fr; }
+  .choice span { padding: 12px 14px; }
+  .actions { flex-direction: column; }
+  .actions button { width: 100%; }
+  .topline { align-items: flex-start; }
+  footer { padding-inline: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="brand">BIO 4650 <span aria-hidden="true">/</span> Midterm 2</div>
+    <h1>Timed Rapid Recall<span style="color:var(--coral)">.</span></h1>
+    <p class="subtitle">Connect key immune molecules to the cells, pathways, and responses they control.</p>
+  </div>
+</header>
+
+<main>
+  <noscript>
+    <p class="note">Enable JavaScript in your browser to use this activity. No internet connection is required.</p>
+  </noscript>
+
+  <section class="card" id="setup" aria-labelledby="setup-title">
+    <p class="eyebrow">Recall · Reveal · Reflect</p>
+    <h2 id="setup-title" tabindex="-1">Choose your practice settings</h2>
+    <p class="lead">Try to answer aloud or in your head before revealing the answer.
+      Then choose <strong>Got It</strong> or <strong>Review Again</strong> to guide your practice.</p>
+    <p class="note">Practice only and not graded. The timer is a gentle prompt:
+      running out of time never marks an answer wrong.</p>
+
+    <form id="settings">
+      <fieldset>
+        <legend>Choose your round</legend>
+        <div class="choices">
+          <label class="choice">
+            <input type="radio" name="mode" value="10">
+            <span><strong>Quick Round</strong><small>10 questions</small></span>
+          </label>
+          <label class="choice">
+            <input type="radio" name="mode" value="20" checked>
+            <span><strong>Standard Round</strong><small>20 questions</small></span>
+          </label>
+          <label class="choice">
+            <input type="radio" name="mode" value="24">
+            <span><strong>Full Review</strong><small>24 questions</small></span>
+          </label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Time per question</legend>
+        <div class="choices timers">
+          <label class="choice"><input type="radio" name="seconds" value="10"><span>10 sec</span></label>
+          <label class="choice"><input type="radio" name="seconds" value="15" checked><span>15 sec</span></label>
+          <label class="choice"><input type="radio" name="seconds" value="20"><span>20 sec</span></label>
+          <label class="choice"><input type="radio" name="seconds" value="0"><span>Untimed</span></label>
+        </div>
+      </fieldset>
+      <div class="actions"><button class="start" type="submit">Start Rapid Recall <span aria-hidden="true">→</span></button></div>
+    </form>
+  </section>
+
+  <section class="card" id="activity" hidden aria-labelledby="question">
+    <div class="topline">
+      <strong id="progress-text"></strong>
+      <span class="pill" id="round-label"></span>
+    </div>
+    <progress id="progress" value="0" max="20" aria-label="Questions completed"></progress>
+    <div class="timer-row">
+      <span id="timer-label">Time to think</span>
+      <span id="timer" role="timer" aria-live="off"></span>
+    </div>
+    <div class="timer-track" id="timer-track" aria-hidden="true"><div id="timer-fill"></div></div>
+    <p class="eyebrow">Bring it to mind</p>
+    <h2 id="question" tabindex="-1"></h2>
+    <p id="time-message" role="status" aria-live="polite" aria-atomic="true"></p>
+    <div class="actions" id="reveal-actions">
+      <button id="reveal" type="button" aria-controls="answer" aria-expanded="false">Reveal Answer</button>
+    </div>
+    <div id="answer" class="answer" hidden>
+      <h3 id="answer-title" tabindex="-1">Answer</h3>
+      <p id="answer-text"></p>
+    </div>
+    <div id="rating" hidden>
+      <p class="rating-hint">How did your answer compare? Choose one to continue.</p>
+      <div class="actions">
+        <button id="got-it" type="button">Got It</button>
+        <button id="review-again" type="button" class="secondary">Review Again</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="summary" hidden aria-labelledby="summary-title">
+    <p class="eyebrow">Round complete</p>
+    <h2 id="summary-title" tabindex="-1"></h2>
+    <div class="summary-stats">
+      <div class="stat"><b id="got-count"></b><span>marked Got It</span></div>
+      <div class="stat review"><b id="review-count"></b><span>marked for review</span></div>
+    </div>
+    <p id="summary-message" class="muted"></p>
+    <div class="actions">
+      <button id="practice-review" type="button">Practice Review Questions</button>
+      <button id="new-round" class="secondary" type="button">Start New Round</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>Douglas Durrant · BIO 4650 · Midterm 2</span>
+  <span>No grades, accounts, analytics, or saved results. Refreshing or closing this page clears your practice.</span>
+</footer>
+
+<script>
+"use strict";
+(() => {
+  const bank = [
+    ["What does the TCR bind on an antigen-presenting cell?","A peptide displayed by an MHC molecule. Associated CD3 chains transmit the signal into the T cell."],
+    ["What does Lck do immediately after TCR engagement?","Lck phosphorylates ITAMs on CD3 and associated ζ chains, creating docking sites for downstream signaling proteins."],
+    ["What is the function of a phosphorylated ITAM?","It recruits signaling proteins. In T cells, phosphorylated ITAMs recruit ZAP-70."],
+    ["Which receptor provides co-stimulation to a naïve T cell?","CD28 on the T cell binds CD80 or CD86 on an antigen-presenting cell."],
+    ["Which Th2 cytokine promotes IgE class switching?","IL-4 promotes switching to IgE in appropriately activated B cells. IL-5 is associated with eosinophil responses."],
+    ["A naïve T cell recognizes peptide–MHC but receives little CD28 signaling. What happens to activation?","Activation and proliferation are impaired. Depending on the context, the cell may become unresponsive."],
+    ["What does IL-2 do after T-cell activation?","IL-2 promotes proliferation. It can act on the cell that secreted it through autocrine signaling."],
+    ["What is CD25, and why does its expression increase after T-cell activation?","CD25 is the α chain of the IL-2 receptor. It helps form a high-affinity receptor so activated cells respond efficiently to IL-2."],
+    ["What happens to IL-2 sensitivity if an activated T cell fails to upregulate CD25?","It responds less readily at low IL-2 concentrations, which can limit clonal expansion."],
+    ["What form of antigen does the BCR bind?","The BCR binds native antigen directly."],
+    ["Which kinase can start BCR signaling by phosphorylating ITAMs, and what is its T-cell counterpart?","Lyn can phosphorylate ITAMs on the BCR-associated chains Igα and Igβ. Lck plays a similar role in T cells."],
+    ["Which cell expresses CD40 and which expresses CD40L during T-dependent B-cell activation?","The B cell expresses CD40. An activated helper T cell expresses CD40L."],
+    ["What happens to T-dependent class switching if the CD40–CD40L interaction is lost?","Class switching is impaired because the B cell loses a key helper T-cell signal."],
+    ["What part of IgG do Fcγ receptors bind?","They bind the Fc region of IgG. Different Fcγ receptors support functions such as phagocytosis and ADCC."],
+    ["How does IgG coating make a target easier for a phagocyte to engulf?","IgG opsonizes the target. Fcγ receptors on the phagocyte bind the exposed Fc regions and promote engulfment."],
+    ["How can an NK cell kill an IgG-coated target?","CD16 (FcγRIIIa) binds IgG Fc on the target. The NK cell releases cytotoxic granules to kill it by ADCC."],
+    ["Which receptor binds IgE with high affinity on mast cells?","FcεRI. Antigen cross-links receptor-bound IgE, triggering degranulation."],
+    ["Would IgE binding to FcεRI alone trigger mast cell degranulation?","Binding alone generally sensitizes the mast cell. Multivalent antigen cross-links the bound IgE to trigger degranulation."],
+    ["What immune functions does the Fc region of an antibody enable?","Depending on the antibody class, the Fc region can engage Fc receptors for phagocytosis or ADCC, or initiate classical complement activation."],
+    ["Which Th1 cytokine activates macrophages?","IFN-γ promotes macrophage activation and supports defense against intracellular microbes."],
+    ["Which Th2 cytokine promotes eosinophil responses?","IL-5 promotes eosinophil development, survival, and activity."],
+    ["How does IL-17 help defend against fungi?","Th17-derived IL-17 acts on tissue cells to induce signals that recruit neutrophils."],
+    ["Which cytokine produced by Tfh cells supports germinal-center B cells?","IL-21 helps support germinal-center B-cell responses and antibody production."],
+    ["How does IL-10 contribute to regulatory T-cell function?","IL-10 can dampen inflammatory responses and help maintain immune tolerance."]
+  ];
+  const $ = id => document.getElementById(id);
+  let round = [], review = [], index = 0, got = 0, seconds = 15;
+  let interval = null, deadline = 0, revealed = false, phase = "setup";
+
+  function stopTimer() {
+    clearInterval(interval);
+    interval = null;
+  }
+
+  function shuffle(items) {
+    const copy = items.slice();
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function showScreen(id) {
+    for (const screen of ["setup", "activity", "summary"]) {
+      $(screen).hidden = screen !== id;
+    }
+    phase = id;
+  }
+
+  function focusHeading(id) {
+    $(id).focus({ preventScroll: true });
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
+
+  function tick() {
+    const remaining = Math.max(0, deadline - performance.now());
+    $("timer").textContent = `${Math.ceil(remaining / 1000)} sec`;
+    $("timer-fill").style.width = `${remaining / (seconds * 1000) * 100}%`;
+    if (remaining === 0) {
+      stopTimer();
+      $("timer-track").classList.add("expired");
+      $("time-message").textContent = "Time’s up — reveal the answer when you’re ready.";
+    }
+  }
+
+  function showQuestion() {
+    stopTimer();
+    revealed = false;
+    $("answer").hidden = true;
+    $("rating").hidden = true;
+    $("reveal-actions").hidden = false;
+    $("reveal").setAttribute("aria-expanded", "false");
+    $("answer-text").textContent = "";
+    $("progress-text").textContent = `Question ${index + 1} of ${round.length}`;
+    $("progress").max = round.length;
+    $("progress").value = index;
+    $("progress").setAttribute("aria-valuetext", `${index} of ${round.length} questions completed`);
+    $("question").textContent = round[index][0];
+    $("time-message").textContent = "Try an answer aloud or in your head before revealing.";
+    $("timer-track").classList.remove("expired");
+    $("timer-track").hidden = seconds === 0;
+    $("timer-label").textContent = seconds ? "Time to think" : "At your own pace";
+    $("timer").textContent = seconds ? `${seconds} sec` : "Untimed";
+    $("timer-fill").style.width = "100%";
+    focusHeading("question");
+    if (seconds) {
+      deadline = performance.now() + seconds * 1000;
+      interval = setInterval(tick, 100);
+    }
+  }
+
+  function startRound(items, label) {
+    stopTimer();
+    round = shuffle(items);
+    review = [];
+    index = 0;
+    got = 0;
+    $("round-label").textContent = label;
+    showScreen("activity");
+    showQuestion();
+  }
+
+  $("settings").addEventListener("submit", event => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const count = Number(form.get("mode"));
+    seconds = Number(form.get("seconds"));
+    const labels = { 10: "Quick Round", 20: "Standard Round", 24: "Full Review" };
+    startRound(shuffle(bank).slice(0, count), labels[count]);
+  });
+
+  $("reveal").addEventListener("click", () => {
+    if (phase !== "activity" || revealed) return;
+    stopTimer();
+    revealed = true;
+    $("answer-text").textContent = round[index][1];
+    $("answer").hidden = false;
+    $("rating").hidden = false;
+    $("reveal").setAttribute("aria-expanded", "true");
+    $("reveal-actions").hidden = true;
+    $("timer-label").textContent = seconds ? "Timer stopped" : "At your own pace";
+    $("time-message").textContent = "Take your time comparing your answer.";
+    $("answer-title").focus();
+  });
+
+  function rate(understood) {
+    if (phase !== "activity" || !revealed) return;
+    revealed = false;
+    if (understood) got++;
+    else review.push(round[index]);
+    index++;
+    if (index < round.length) {
+      showQuestion();
+      return;
+    }
+    stopTimer();
+    showScreen("summary");
+    $("summary-title").textContent = `You marked ${got} of ${round.length} as Got It`;
+    $("got-count").textContent = got;
+    $("review-count").textContent = review.length;
+    $("summary-message").textContent = review.length
+      ? `${review.length} ${review.length === 1 ? "question is" : "questions are"} marked for review. Give those another pass, or start a new round.`
+      : "No questions marked for review this round. Start a new round whenever you’re ready.";
+    $("practice-review").hidden = review.length === 0;
+    focusHeading("summary-title");
+  }
+
+  $("got-it").addEventListener("click", () => rate(true));
+  $("review-again").addEventListener("click", () => rate(false));
+  $("practice-review").addEventListener("click", () => {
+    if (phase === "summary" && review.length) {
+      startRound(review, "Review Practice");
+    }
+  });
+  $("new-round").addEventListener("click", () => {
+    stopTimer();
+    round = [];
+    review = [];
+    got = 0;
+    index = 0;
+    showScreen("setup");
+    focusHeading("setup-title");
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && phase === "activity" && !revealed && interval) tick();
+  });
+})();
+</script>
+</body>
+</html>
